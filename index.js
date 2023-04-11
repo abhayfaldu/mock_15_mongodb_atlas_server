@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./configs/db");
-const tripModal = require("./models/trips.model");
+const TripModel = require("./models/trips.model");
 
 const app = express();
 
@@ -12,11 +12,20 @@ app.get("/", (req, res) => {
   res.send("hello home");
 });
 
+app.get("/trips", async (req, res) => {
+  try {
+    const trips = await TripModel.find();
+    res.send(trips);
+  } catch (error) {
+    res.send({ msg: "error in getting data", err: error });
+  }
+});
+
 app.post("/postdata", async (req, res) => {
   try {
-    const trip = new tripModal(req.body);
+    const trip = new TripModel(req.body);
     await trip.save();
-    res.send("postdata route");
+    res.send({ msg: "Data posted successfully", response: trip });
   } catch (error) {
     res.send({ msg: "Error in posting", err: error });
   }
