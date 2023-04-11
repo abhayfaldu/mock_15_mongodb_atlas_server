@@ -1,18 +1,25 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./configs/db");
+const tripModal = require("./models/trips.model");
 
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("hello home");
 });
 
-app.post("/postdata", (req, res) => {
-  console.log(req.body);
-  res.send("postdata route");
+app.post("/postdata", async (req, res) => {
+  try {
+    const trip = new tripModal(req.body);
+    await trip.save();
+    res.send("postdata route");
+  } catch (error) {
+    res.send({ msg: "Error in posting", err: error });
+  }
 });
 
 app.listen(8080, async () => {

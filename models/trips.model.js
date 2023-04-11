@@ -8,6 +8,6 @@ const tripSchema = new mongoose.Schema({
   budgetPerPerson: { type: Number, require: true },
 });
 
-const tripModal = mongoose.Model("trip", tripSchema);
+const tripModal = mongoose.model("trip", tripSchema);
 
 module.exports = tripModal;
